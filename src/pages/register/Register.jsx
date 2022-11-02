@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./register.scss";
 
 const Register = () => {
@@ -14,7 +15,9 @@ const Register = () => {
             eum nemo quam mollitia.
           </p>
           <span>계정이 있으신가요?</span>
-          <button>로그인</button>
+          <Link to="/login">
+            <button>로그인</button>
+          </Link>
         </div>
         <div className="right">
           <h1>회원가입</h1>

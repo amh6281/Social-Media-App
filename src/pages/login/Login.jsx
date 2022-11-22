@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
 import "./login.scss";
 
 const Login = () => {
+  const { login } = useContext(AuthContext);
+
+  const handleLogin = () => {
+    login();
+  };
+
   return (
     <div className="login">
       <div className="card">
@@ -24,7 +31,7 @@ const Login = () => {
           <form>
             <input type="text" placeholder="아이디" />
             <input type="password" placeholder="비밀번호" />
-            <button>로그인</button>
+            <button onClick={handleLogin}>로그인</button>
           </form>
         </div>
       </div>

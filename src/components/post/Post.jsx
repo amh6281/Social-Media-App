@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./post.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
@@ -6,8 +6,11 @@ import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
+import Comments from "../comments/Comments";
 
 const Post = ({ post }) => {
+  const [commentOpen, setCommentOpen] = useState(false);
+
   //TEMPORARY
   const liked = false;
   return (
@@ -37,7 +40,7 @@ const Post = ({ post }) => {
             {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
             좋아요 12개
           </div>
-          <div className="item">
+          <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />
             댓글 5개
           </div>
@@ -46,6 +49,7 @@ const Post = ({ post }) => {
             공유 13회
           </div>
         </div>
+        {commentOpen && <Comments />}
       </div>
     </div>
   );

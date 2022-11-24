@@ -42,7 +42,7 @@ const Profile = () => {
             <div className="info">
               <div className="item">
                 <PlaceIcon />
-                <span>천안시 서북구</span>
+                <span>천안</span>
               </div>
               <div className="item">
                 <LanguageIcon />

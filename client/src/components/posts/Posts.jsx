@@ -10,11 +10,15 @@ const Posts = () => {
       return res.data;
     })
   );
+
+  console.log(data);
   return (
     <div className="posts">
-      {data.map((post) => (
-        <Post post={post} key={post.id} />
-      ))}
+      {error
+        ? "오류가 발생하였습니다!"
+        : isLoading
+        ? "loading"
+        : data.map((post) => <Post post={post} key={post.id} />)}
     </div>
   );
 };

@@ -52,7 +52,14 @@ const Share = () => {
       <div className="container">
         <div className="top">
           <div className="left">
-            <img src={currentUser.profilePic} alt="" />
+            <img
+              src={
+                currentUser.profilePic === null
+                  ? "https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif"
+                  : currentUser.profilePic
+              }
+              alt=""
+            />
             <input
               type="text"
               placeholder="무슨 생각을 하고 계신가요?"

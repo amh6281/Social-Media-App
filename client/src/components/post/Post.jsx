@@ -20,7 +20,14 @@ const Post = ({ post }) => {
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            <img src={post.profilePic} alt="" />
+            <img
+              src={
+                post.profilePic === null
+                  ? "https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif"
+                  : post.profilePic
+              }
+              alt=""
+            />
             <div className="details">
               <Link
                 to={`/profile/${post.userId}`}

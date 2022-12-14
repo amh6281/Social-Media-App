@@ -23,7 +23,14 @@ const Leftbar = () => {
       <div className="container">
         <div className="menu">
           <div className="user">
-            <img src={currentUser.profilePic} alt="" />
+            <img
+              src={
+                currentUser.profilePic === null
+                  ? "https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif"
+                  : currentUser.profilePic
+              }
+              alt=""
+            />
             <span>{currentUser.name}</span>
           </div>
           <div className="item">

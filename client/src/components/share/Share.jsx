@@ -12,6 +12,17 @@ const Share = () => {
   const [file, setFile] = useState(null);
   const [desc, setDesc] = useState("");
 
+  const upload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await makeRequest.post("/upload", formData);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const { currentUser } = useContext(AuthContext);
 
   const queryClient = useQueryClient();
@@ -27,9 +38,13 @@ const Share = () => {
     }
   );
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
-    mutation.mutate({ desc });
+    let imgUrl = "";
+    if (file) imgUrl = await upload();
+    mutation.mutate({ desc, img: imgUrl });
+    setDesc("");
+    setFile(null);
   };
 
   return (
@@ -42,7 +57,13 @@ const Share = () => {
               type="text"
               placeholder="무슨 생각을 하고 계신가요?"
               onChange={(e) => setDesc(e.target.value)}
+              value={desc}
             />
+          </div>
+          <div className="right">
+            {file && (
+              <img className="file" alt="" src={URL.createObjectURL(file)} />
+            )}
           </div>
         </div>
         <hr />

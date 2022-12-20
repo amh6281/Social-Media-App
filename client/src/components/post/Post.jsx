@@ -58,7 +58,7 @@ const Post = ({ post }) => {
             공유 13회
           </div>
         </div>
-        {commentOpen && <Comments />}
+        {commentOpen && <Comments postId={post.id} />}
       </div>
     </div>
   );

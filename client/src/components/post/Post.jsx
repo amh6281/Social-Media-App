@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import Comments from "../comments/Comments";
 import "moment/locale/ko";
 import moment from "moment";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
 import { AuthContext } from "../../context/authContext";
 
@@ -23,6 +23,24 @@ const Post = ({ post }) => {
       return res.data;
     })
   );
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+    (liked) => {
+      if (liked) return makeRequest.delete("/likes?postId=" + post.id);
+      return makeRequest.post("/likes", { postId: post.id });
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["likes"]);
+      },
+    }
+  );
+
+  const handleLike = () => {
+    mutation.mutate(data.includes(currentUser.id));
+  };
 
   return (
     <div className="post">
@@ -58,19 +76,22 @@ const Post = ({ post }) => {
             {isLoading ? (
               "loading"
             ) : data.includes(currentUser.id) ? (
-              <FavoriteOutlinedIcon style={{ color: "red" }} />
+              <FavoriteOutlinedIcon
+                style={{ color: "red" }}
+                onClick={handleLike}
+              />
             ) : (
-              <FavoriteBorderOutlinedIcon />
+              <FavoriteBorderOutlinedIcon onClick={handleLike} />
             )}
             좋아요 {data?.length}개
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />
-            댓글 5개
+            댓글
           </div>
           <div className="item">
             <ShareOutlinedIcon />
-            공유 13회
+            공유
           </div>
         </div>
         {commentOpen && <Comments postId={post.id} />}

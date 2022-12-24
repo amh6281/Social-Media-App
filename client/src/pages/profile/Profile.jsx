@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./profile.scss";
 import FacebookTwoToneIcon from "@mui/icons-material/FacebookTwoTone";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -8,56 +8,88 @@ import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts";
+import { useQuery } from "@tanstack/react-query";
+import { makeRequest } from "../../axios";
+import { useLocation } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
 
 const Profile = () => {
+  const { currentUser } = useContext(AuthContext);
+
+  const userId = parseInt(useLocation().pathname.split("/")[2]);
+
+  const { isLoading, error, data } = useQuery(["user"], () =>
+    makeRequest.get("/users/find/" + userId).then((res) => {
+      return res.data;
+    })
+  );
+  console.log(data);
   return (
     <div className="profile">
-      <div className="images">
-        <img
-          src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt=""
-          className="cover"
-        />
-        <img
-          src="https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif"
-          alt=""
-          className="profilePic"
-        />
-      </div>
-      <div className="profileContainer">
-        <div className="uInfo">
-          <div className="left">
-            <a href="http://facebook.com">
-              <FacebookTwoToneIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <InstagramIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <TwitterIcon fontSize="large" />
-            </a>
+      {isLoading ? (
+        "loading"
+      ) : (
+        <>
+          <div className="images">
+            <img
+              src={
+                data.coverPic === null
+                  ? "https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  : data?.coverPic
+              }
+              alt=""
+              className="cover"
+            />
+            {data.profilePic ? (
+              <img src={data.profilePic} alt="" className="profilePic" />
+            ) : (
+              <img
+                src="https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif"
+                alt=""
+                className="profilePic"
+              />
+            )}
           </div>
-          <div className="center">
-            <span>홍길동</span>
-            <div className="info">
-              <div className="item">
-                <PlaceIcon />
-                <span>천안</span>
+          <div className="profileContainer">
+            <div className="uInfo">
+              <div className="left">
+                <a href="http://facebook.com">
+                  <FacebookTwoToneIcon fontSize="large" />
+                </a>
+                <a href="http://facebook.com">
+                  <InstagramIcon fontSize="large" />
+                </a>
+                <a href="http://facebook.com">
+                  <TwitterIcon fontSize="large" />
+                </a>
               </div>
-              <div className="item">
-                <LanguageIcon />
-                <span>github/amh6281</span>
+              <div className="center">
+                <span>{data.name}</span>
+                <div className="info">
+                  <div className="item">
+                    <PlaceIcon />
+                    <span>{data.city}</span>
+                  </div>
+                  <div className="item">
+                    <LanguageIcon />
+                    <span>{data?.website}</span>
+                  </div>
+                </div>
+                {userId === currentUser.id ? (
+                  <button>업데이트</button>
+                ) : (
+                  <button>팔로우</button>
+                )}
+              </div>
+              <div className="right">
+                <EmailOutlinedIcon />
+                <MoreVertIcon />
               </div>
             </div>
-            <button>팔로우</button>
+            <Posts />
           </div>
-          <div className="right">
-            <EmailOutlinedIcon />
-            <MoreVertIcon />
-          </div>
-        </div>
-        <Posts />
-      </div>
+        </>
+      )}
     </div>
   );
 };

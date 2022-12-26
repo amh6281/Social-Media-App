@@ -8,7 +8,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Posts from "../../components/posts/Posts";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
@@ -31,8 +31,26 @@ const Profile = () => {
         return res.data;
       })
   );
-  console.log(relationshipData);
-  const handleFollow = () => {};
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+    (following) => {
+      if (following)
+        return makeRequest.delete("/relationships?userId=" + userId);
+      return makeRequest.post("/relationships", { userId });
+    },
+    {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(["relationship"]);
+      },
+    }
+  );
+
+  const handleFollow = () => {
+    mutation.mutate(relationshipData.includes(currentUser.id));
+  };
 
   return (
     <div className="profile">
@@ -86,9 +104,9 @@ const Profile = () => {
                   </div>
                 </div>
                 {userId === currentUser.id ? (
-                  <button onClick={handleFollow}>업데이트</button>
+                  <button>업데이트</button>
                 ) : (
-                  <button>
+                  <button onClick={handleFollow}>
                     {rIsLoading
                       ? "loading"
                       : relationshipData.includes(currentUser.id)

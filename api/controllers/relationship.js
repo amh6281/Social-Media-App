@@ -19,13 +19,14 @@ export const addRelationship = (req, res) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("토큰이 유효하지 않습니다.");
 
-    const q = "INSERT INTO likes (`userId`,postId) VALUES (?)";
+    const q =
+      "INSERT INTO relationships (`followerUserId`,`followedUserId`) VALUES (?)";
 
-    const values = [userInfo.id, req.body.postId];
+    const values = [userInfo.id, req.body.userId];
 
     db.query(q, [values], (err, data) => {
       if (err) return res.status(500).json(err);
-      return res.status(200).json("게시물에 좋아요를 표시합니다. ");
+      return res.status(200).json("팔로잉");
     });
   });
 };
@@ -37,11 +38,12 @@ export const deleteRelationship = (req, res) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(403).json("토큰이 유효하지 않습니다.");
 
-    const q = "DELETE FROM likes WHERE `userId` = ? AND `postId` = ?";
+    const q =
+      "DELETE FROM relationships WHERE `followerUserId` = ? AND `followedUserId` = ?";
 
-    db.query(q, [userInfo.id, req.query.postId], (err, data) => {
+    db.query(q, [userInfo.id, req.query.userId], (err, data) => {
       if (err) return res.status(500).json(err);
-      return res.status(200).json("게시물에 좋아요를 취소합니다.");
+      return res.status(200).json("언팔로우");
     });
   });
 };

@@ -66,13 +66,17 @@ const Profile = () => {
               src={
                 data.coverPic === null
                   ? "https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                  : data?.coverPic
+                  : "/upload/" + data?.coverPic
               }
               alt=""
               className="cover"
             />
             {data.profilePic ? (
-              <img src={data.profilePic} alt="" className="profilePic" />
+              <img
+                src={"/upload/" + data.profilePic}
+                alt=""
+                className="profilePic"
+              />
             ) : (
               <img
                 src="https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif"
@@ -127,7 +131,7 @@ const Profile = () => {
           </div>
         </>
       )}
-      {openUpdate && <Update setOpenUpdate={setOpenUpdate} />}
+      {openUpdate && <Update setOpenUpdate={setOpenUpdate} user={data} />}
     </div>
   );
 };

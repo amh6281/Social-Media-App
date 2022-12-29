@@ -51,7 +51,7 @@ const Post = ({ post }) => {
               src={
                 post.profilePic === null
                   ? "https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif"
-                  : post.profilePic
+                  : "/upload/" + post.profilePic
               }
               alt=""
             />

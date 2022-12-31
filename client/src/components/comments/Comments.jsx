@@ -38,7 +38,7 @@ const Comments = ({ postId }) => {
   return (
     <div className="comments">
       <div className="write">
-        <img src={currentUser.profilePic} alt="" />
+        <img src={"/upload/" + currentUser.profilePic} alt="" />
         <input
           type="text"
           placeholder="댓글을 입력하세요..."

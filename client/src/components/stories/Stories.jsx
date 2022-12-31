@@ -13,17 +13,17 @@ const Stories = () => {
     },
     {
       id: 2,
-      name: "김철수",
+      name: "홍길동",
       img: "https://images.pexels.com/photos/13916254/pexels-photo-13916254.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
     },
     {
       id: 3,
-      name: "김철수",
+      name: "가나다",
       img: "https://images.pexels.com/photos/13916254/pexels-photo-13916254.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
     },
     {
       id: 4,
-      name: "김철수",
+      name: "홍순",
       img: "https://images.pexels.com/photos/13916254/pexels-photo-13916254.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load",
     },
   ];
@@ -31,7 +31,7 @@ const Stories = () => {
   return (
     <div className="stories">
       <div className="story">
-        <img src={currentUser.profilePic} alt="" />
+        <img src={"/upload/" + currentUser.profilePic} alt="" />
         <span>{currentUser.name}</span>
         <button>+</button>
       </div>

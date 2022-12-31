@@ -27,7 +27,7 @@ const Leftbar = () => {
               src={
                 currentUser.profilePic === null
                   ? "https://crowd-literature.eu/wp-content/uploads/2015/01/no-avatar.gif"
-                  : currentUser.profilePic
+                  : "/upload/" + currentUser.profilePic
               }
               alt=""
             />

@@ -51,3 +51,21 @@ export const addPost = (req, res) => {
     });
   });
 };
+
+export const deletePost = (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("로그인이 필요합니다.");
+
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(403).json("토큰이 유효하지 않습니다.");
+
+    const q = "DELETE FROM posts WHERE `id` = ? AND `userId` = ?";
+
+    db.query(q, [req.params.id, userInfo.id], (err, data) => {
+      if (err) return res.status(500).json(err);
+      if (data.affectedRows > 0)
+        return res.status(200).json("게시글이 삭제되었습니다!");
+      return res.status(403).json("자신의 게시물이 아닙니다.");
+    });
+  });
+};
